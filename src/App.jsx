@@ -4,12 +4,21 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { Footer, Navbar } from "./components/index";
 import { Actors, Movie, MovieInfo, Profile } from "./pages";
 
+import useStyles from "./styles";
+import { CssBaseline } from "@mui/material";
+
 const App = () => {
   const Layout = () => {
+    const classes = useStyles();
     return (
-      <div className="app">
+      <div className={classes.root}>
+        <CssBaseline />
         <Navbar />
-        <Outlet />
+        <main className={classes.content}>
+          <div className={classes.toolbar}></div>
+          <Outlet />
+        </main>
+
         <Footer />
       </div>
     );
@@ -21,7 +30,7 @@ const App = () => {
       element: <Layout />,
       children: [
         { path: "/", element: <Movie /> },
-        { path: "/info/:id", element: <MovieInfo /> },
+        { path: "/movie/:id", element: <MovieInfo /> },
         { path: "/profile/:id", element: <Profile /> },
         { path: "/actors/:id", element: <Actors /> },
       ],
