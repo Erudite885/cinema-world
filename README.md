@@ -4,8 +4,8 @@
 
 Mobile Devices
 
-![mobile devices](./src/assets/mobile-nav-component.png)
+![mobile devices](./src/assets/Cinema-World_mobile-sidebar_open.png)
 
 Large Devices
 
-![large devices](./src/assets/nav-component.png)
+![large devices](./src/assets/Cinema-World_sidebar.png)
