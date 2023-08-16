@@ -1,4 +1,4 @@
-## Navigation Component
+## SideBar Component
 
 ### using MUI styling.
 
