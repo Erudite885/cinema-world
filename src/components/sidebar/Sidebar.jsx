@@ -32,26 +32,22 @@ const Sidebar = ({ setMobileOpen }) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  //   useEffect(() => {
-  //     first;
-  //   }, [third]);
-
   return (
     <>
-      {/* <Link to={`/`} className={classes.imageLink}> */}
+      <Link to={`/`} className={classes.imageLink}>
         {/* <img
           src={theme.palette.mode === "light" ? "" : ""}
           alt="logo"
           className={classes.image}
         /> */}
         <h2 className={classes.logo}>CINEMA WORLD</h2> {/*temporary, image will come later*/}
-      {/* </Link> */}
+      </Link>
       <Divider />
       <List>
         <ListSubheader>Categories </ListSubheader>
         {Categories.map(({ label, value }) => (
           <Link key={value} className={classes.links} to="/">
-            <ListItemButton onClick={() => {}} button>
+            <ListItemButton onClick={() => {}}>
               {/* <ListItemIcon>
                 <img
                   src={""}
@@ -70,7 +66,7 @@ const Sidebar = ({ setMobileOpen }) => {
         <ListSubheader>Genres </ListSubheader>
         {dummyCategory.map(({ label, value }) => (
           <Link key={value} className={classes.links} to="/">
-            <ListItemButton onClick={() => {}} button>
+            <ListItemButton onClick={() => {}}>
               {/* <ListItemIcon>
                 <img
                   src={""}
