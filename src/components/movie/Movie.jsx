@@ -19,11 +19,11 @@ const Movie = ({ movie, i }) => {
             alt={movie.title}
             className={classes.image}
           />
+          <Typography className={classes.title} variant="h5">
+            {movie.title}
+          </Typography>
         </Link>
       </Grow>
-      <Typography className={classes.title} variant="h5">
-        {movie.title}
-      </Typography>
     </Grid>
   );
 };
