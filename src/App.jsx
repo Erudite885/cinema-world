@@ -2,7 +2,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 import { Footer, Navbar } from "./components/index";
-import { Actors, Movie, MovieInfo, Profile } from "./pages";
+import { Actors, Movies, MovieInfo, Profile } from "./pages";
 
 import useStyles from "./styles";
 import { CssBaseline } from "@mui/material";
@@ -29,7 +29,7 @@ const App = () => {
       path: "/",
       element: <Layout />,
       children: [
-        { path: "/", element: <Movie /> },
+        { path: "/", element: <Movies /> },
         { path: "/movie/:id", element: <MovieInfo /> },
         { path: "/profile/:id", element: <Profile /> },
         { path: "/actors/:id", element: <Actors /> },
