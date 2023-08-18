@@ -13,7 +13,7 @@ const Movies = () => {
   const { data } = useGetMoviesQuery();
   console.log(data);
   
-  return <div><MovieList /></div>;
+  return <div><MovieList movies={data} /></div>;
 };
 
 export default Movies;
