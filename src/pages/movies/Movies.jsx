@@ -7,12 +7,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useGetMoviesQuery } from "../../services/TMDB";
+import { MovieList } from "../../components";
 
 const Movies = () => {
   const { data } = useGetMoviesQuery();
   console.log(data);
   
-  return <div>Movie</div>;
+  return <div><MovieList /></div>;
 };
 
 export default Movies;
