@@ -6,11 +6,17 @@ import {
   useMediaQuery,
   Typography,
 } from "@mui/material";
-import { useGetMoviesQuery } from "../../services/TMDB";
+
+import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
+import { useGetMoviesQuery }   from "../../services/TMDB";
 import { MovieList } from "../../components";
 
 const Movies = () => {
-  const { data, isFetching, error } = useGetMoviesQuery();
+  const [page, setPage] = useState(1)
+  const { genreIdOrCategoryName } = useSelector(
+    (state) => state.currentGenreOrCategory
+  );
+  const { data, isFetching, error } = useGetMoviesQuery({genreIdOrCategoryName});
 
   if (isFetching) {
     return (
