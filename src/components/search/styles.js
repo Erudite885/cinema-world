@@ -1,3 +1,4 @@
+import { light } from "@mui/material/styles/createPalette";
 import { makeStyles } from "@mui/styles";
 
 export default makeStyles((theme) => ({
