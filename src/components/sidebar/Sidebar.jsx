@@ -11,11 +11,13 @@ import {
   ListItemButton,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useTheme } from "@mui/material/styles";
 import useStyles from "./styles";
 import { useGetGenresQuery } from "../../services/TMDB";
 import genreIcons from "../../assets/genres";
+import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
 
 const Categories = [
   { label: "Popular", value: "popular" },
@@ -24,11 +26,13 @@ const Categories = [
 ];
 
 const Sidebar = ({ setMobileOpen }) => {
+  const { genreIdOrCategoryName } = useSelector(
+    (state) => state.currentGenreOrCategory
+  );
   const classes = useStyles();
   const theme = useTheme();
   const { data, isFetching } = useGetGenresQuery();
-
-  console.log(data);
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -46,15 +50,17 @@ const Sidebar = ({ setMobileOpen }) => {
         <ListSubheader>Categories </ListSubheader>
         {Categories.map(({ label, value }) => (
           <Link key={value} className={classes.links} to="/">
-            <ListItemButton onClick={() => {}}>
-              {/* <ListItemIcon>
+            <ListItemButton
+              onClick={() => dispatch(selectGenreOrCategory(value))}
+            >
+              <ListItemIcon>
                 <img
-                  src={genreIcons[label.toLowerCase()}
+                  src={genreIcons[label.toLowerCase()]}
                   alt=""
                   className={classes.genreImages}
                   height={30}
                 />
-              </ListItemIcon> */}
+              </ListItemIcon>
               <ListItemText primary={label} />
             </ListItemButton>
           </Link>
@@ -70,15 +76,17 @@ const Sidebar = ({ setMobileOpen }) => {
         ) : (
           data.genres.map(({ name, id }) => (
             <Link key={name} className={classes.links} to="/">
-              <ListItemButton onClick={() => {}}>
-                {/* <ListItemIcon>
+              <ListItemButton
+                onClick={() => dispatch(selectGenreOrCategory(id))}
+              >
+                <ListItemIcon>
                 <img
                   src={genreIcons[name.toLowerCase()]}
                   alt=""
                   className={classes.genreImages}
                   height={30}
                 />
-              </ListItemIcon> */}
+              </ListItemIcon>
                 <ListItemText primary={name} />
               </ListItemButton>
             </Link>
