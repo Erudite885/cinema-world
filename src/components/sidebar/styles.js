@@ -15,5 +15,5 @@ export default makeStyles((theme) => ({
   },
   image: { width: "70%" },
   links: { color: theme.palette.text.primary, textDecoration: "none" },
-  genreImages: { filter: theme.palette.mode === "dark" ? "dark" : "invert(1)" },
+  genreImages: { filter: theme.palette.mode === "dark" ? "dark" : "inherit" },
 }));
