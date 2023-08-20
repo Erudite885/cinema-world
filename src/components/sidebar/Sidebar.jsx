@@ -56,7 +56,7 @@ const Sidebar = ({ setMobileOpen }) => {
               <ListItemIcon>
                 <img
                   src={genreIcons[label.toLowerCase()]}
-                  alt=""
+                  alt={label}
                   className={classes.genreImages}
                   height={30}
                 />
@@ -74,7 +74,7 @@ const Sidebar = ({ setMobileOpen }) => {
             <CircularProgress />
           </Box>
         ) : (
-          data.genres.map(({ name, id }) => (
+          data?.genres?.map(({ name, id }) => (
             <Link key={name} className={classes.links} to="/">
               <ListItemButton
                 onClick={() => dispatch(selectGenreOrCategory(id))}
@@ -82,7 +82,7 @@ const Sidebar = ({ setMobileOpen }) => {
                 <ListItemIcon>
                 <img
                   src={genreIcons[name.toLowerCase()]}
-                  alt=""
+                  alt={name}
                   className={classes.genreImages}
                   height={30}
                 />
