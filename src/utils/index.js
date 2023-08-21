@@ -14,6 +14,7 @@ export const fetchToken = async () => {
 
     if (data.success) {
       localStorage.setItem("request_token", token);
+
       window.location.href = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${window.location.origin}/approved`;
     }
   } catch (error) {
@@ -35,7 +36,7 @@ export const createSessionId = async () => {
       localStorage.setItem("session_id", session_id);
       return session_id;
     } catch (error) {
-      console.log(error);
+      console.log("Session id could not be created.");
     }
   }
 };
