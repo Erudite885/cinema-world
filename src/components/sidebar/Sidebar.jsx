@@ -19,20 +19,25 @@ import { useGetGenresQuery } from "../../services/TMDB";
 import genreIcons from "../../assets/genres";
 import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
 
-const Categories = [
+const categories = [
   { label: "Popular", value: "popular" },
   { label: "Top Rated", value: "top_rated" },
   { label: "Upcoming", value: "upcoming" },
 ];
 
 const Sidebar = ({ setMobileOpen }) => {
+  const theme = useTheme();
+  const classes = useStyles();
+  const { data, isFetching } = useGetGenresQuery();
+
+  const dispatch = useDispatch();
   const { genreIdOrCategoryName } = useSelector(
     (state) => state.currentGenreOrCategory
   );
-  const classes = useStyles();
-  const theme = useTheme();
-  const { data, isFetching } = useGetGenresQuery();
-  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [genreIdOrCategoryName]);
 
   return (
     <>
@@ -48,7 +53,7 @@ const Sidebar = ({ setMobileOpen }) => {
       <Divider />
       <List>
         <ListSubheader>Categories </ListSubheader>
-        {Categories.map(({ label, value }) => (
+        {categories.map(({ label, value }) => (
           <Link key={value} className={classes.links} to="/">
             <ListItemButton
               onClick={() => dispatch(selectGenreOrCategory(value))}
@@ -80,13 +85,13 @@ const Sidebar = ({ setMobileOpen }) => {
                 onClick={() => dispatch(selectGenreOrCategory(id))}
               >
                 <ListItemIcon>
-                <img
-                  src={genreIcons[name.toLowerCase()]}
-                  alt={name}
-                  className={classes.genreImages}
-                  height={30}
-                />
-              </ListItemIcon>
+                  <img
+                    src={genreIcons[name.toLowerCase()]}
+                    alt={name}
+                    className={classes.genreImages}
+                    height={30}
+                  />
+                </ListItemIcon>
                 <ListItemText primary={name} />
               </ListItemButton>
             </Link>
