@@ -1,10 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { InputAdornment, TextField } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
+
 import { searchMovie } from "../../features/currentGenreOrCategory";
-import  useStyles  from "./styles";
+import useStyles from "./styles";
 
 const Search = () => {
   const classes = useStyles();
@@ -17,10 +18,16 @@ const Search = () => {
     }
   };
 
+  const location = useLocation();
+  if (location.pathname !== "/" && location.pathname !== "/approved") {
+    return null;
+  }
+
   return (
-    <div className="searchContainer">
+    <div className={classes.searchContainer}>
       <TextField
         onKeyDown={handleKeyDown}
+        placeholder="Search for a movie"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         variant="standard"
