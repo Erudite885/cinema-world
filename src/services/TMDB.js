@@ -6,55 +6,58 @@ export const tmdbApi = createApi({
   reducerPath: "tmdbApi",
   baseQuery: fetchBaseQuery({ baseUrl: "https://api.themoviedb.org/3" }),
   endpoints: (builder) => ({
+    // genres
     getGenres: builder.query({
       query: () => `genre/movie/list?api_key=${tmdbApiKey}`,
     }),
-
+    // type
     getMovies: builder.query({
       query: ({ genreIdOrCategoryName, page, searchQuery }) => {
         if (searchQuery) {
           return `/search/movie?query=${searchQuery}&page=${page}&api_key=${tmdbApiKey}`;
         }
-
         if (
           genreIdOrCategoryName &&
           typeof genreIdOrCategoryName === "string"
         ) {
           `movie/${genreIdOrCategoryName}?page=${page}&api_key=${tmdbApiKey}`;
         }
-
         if (
           genreIdOrCategoryName &&
           typeof genreIdOrCategoryName === "number"
         ) {
           return `discover/movie?with_genres=${genreIdOrCategoryName}page=${page}&api_key=${tmdbApiKey}`;
         }
-
         return `movie/popular?page=${page}&api_key=${tmdbApiKey}`;
       },
     }),
-
+    // movie
     getMovie: builder.query({
       query: (id) =>
         `/movie/${id}?append_to_response=videos,credits&api_key=${tmdbApiKey}`,
     }),
-
+    // recommended
     getRecommendations: builder.query({
-      query: ({ movie_id, list }) =>
-        `/movie/${movie_id}/${list}?api_key=${tmdbApiKey}`,
+      query: ({ movieId, list }) =>
+        `/movie/${movieId}/${list}?api_key=${tmdbApiKey}`,
     }),
-
+    // actor details
     getActorsDetails: builder.query({
       query: (id) => `person/${id}?api_key=${tmdbApiKey}`,
     }),
-
+    // actor id
     getMoviesByActorId: builder.query({
       query: ({ id, page }) =>
         `/discover/movie?with_cast=${id}&page=${page}&api_key=${tmdbApiKey}`,
     }),
-
+    // movie credits
     getActorMovieCreditDetails: builder.query({
       query: (id) => `person/${id}/movie_credits?api_key=${tmdbApiKey}`,
+    }),
+    // user list
+    getUsersList: builder.query({
+      query: ({ accountId, sessionId, page, list }) =>
+        `account/${accountId}/${list}?api_key=${tmdbApiKey}&session_id=${sessionId}&page=${page}`,
     }),
   }),
 });
@@ -67,4 +70,5 @@ export const {
   useGetActorsDetailsQuery,
   useGetMoviesByActorIdQuery,
   useGetActorMovieCreditDetailsQuery,
+  useGetUsersListQuery,
 } = tmdbApi;
