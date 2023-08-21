@@ -7,9 +7,9 @@ import {
   Typography,
 } from "@mui/material";
 
-import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
+// import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
 import { useGetMoviesQuery } from "../../services/TMDB";
-import { MovieList } from "../../components";
+import { MovieList, Pagination, FeaturedMovie } from "../../components";
 
 const Movies = () => {
   const [page, setPage] = useState(1);
@@ -21,6 +21,9 @@ const Movies = () => {
     page,
     searchQuery,
   });
+
+  const lgDevice = useMediaQuery((theme) => theme.breakpoints.only("lg"));
+  const numberOfMoviesToShow = lgDevice ? 17 : 19;
 
   if (isFetching) {
     return (
@@ -38,14 +41,27 @@ const Movies = () => {
     );
   }
 
-  if (error) return "An error has occured.";
-
-  console.log(data);
+  if (error)
+    return (
+      <Box display="flex" alignItems="center" mt="20px">
+        <Typography variant="h4">An error occured.</Typography>
+      </Box>
+    );
 
   return (
-    <div>
-      <MovieList movies={data} />
-    </div>
+    <>
+      <FeaturedMovie movie={data?.results[0]} />
+      <MovieList
+        movies={data}
+        numberOfMovies={numberOfMoviesToShow}
+        excludeFirst
+      />
+      <Pagination
+        currentPage={page}
+        setPage={setPage}
+        totalPages={data?.total_pages}
+      />
+    </>
   );
 };
 
