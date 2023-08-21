@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useRef } from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-
-import { Footer, Navbar } from "./components/index";
-import { Actors, Movies, MovieInfo, Profile } from "./pages";
-
-import useStyles from "./styles";
 import { CssBaseline } from "@mui/material";
+
+import { Navbar } from "./components";
+import useAlan from "./components/alan/Alan";
+import { Actors, Movies, MovieInfo, Profile } from "./pages";
+import useStyles from "./styles";
 
 const App = () => {
   const Layout = () => {
     const classes = useStyles();
+    const alanBtnContainer = useRef();
+    useAlan();
+
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -19,7 +22,7 @@ const App = () => {
           <Outlet />
         </main>
 
-        <Footer />
+        <div ref={alanBtnContainer}></div>
       </div>
     );
   };
@@ -33,12 +36,14 @@ const App = () => {
         { path: "/movie/:id", element: <MovieInfo /> },
         { path: "/profile/:id", element: <Profile /> },
         { path: "/actors/:id", element: <Actors /> },
+        { path: "/approved", element: <Movies /> },
+        { path: "/*", element: <Movies /> },
       ],
     },
   ]);
 
   return (
-    <div className="">
+    <div >
       <RouterProvider router={router} />
     </div>
   );
