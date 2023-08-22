@@ -17,7 +17,7 @@ const useAlan = () => {
 
   useEffect(() => {
     alanBtn({
-      key: "",
+      key: import.meta.env.VITE_ALAN_KEY,
       onCommand: ({ command, mode, genreOrCategory, genre, query }) => {
         if (command === "changeMode") {
           if (mode === "light") setMode("light");
