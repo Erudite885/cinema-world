@@ -60,7 +60,7 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar style={{ backgroundColor: "orange" }} position="fixed">
+      <AppBar className={classes.appBarStyle}  position="fixed">
         <Toolbar className={classes.toolbar}>
           {isMobile && (
             <IconButton

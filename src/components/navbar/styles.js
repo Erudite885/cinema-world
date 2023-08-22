@@ -3,6 +3,10 @@ import { makeStyles } from "@mui/styles";
 const drawerWidth = 240;
 
 export default makeStyles((theme) => ({
+  appBarStyle: {
+    backgroundColor:
+      theme.palette.mode === "light" ? "orange !important" : "grey !important",
+  },
   toolbar: {
     height: "80px",
     display: "flex",
