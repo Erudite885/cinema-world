@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   Typography,
@@ -9,7 +9,6 @@ import {
   CircularProgress,
   Rating,
   Tooltip,
-  useMediaQuery,
 } from "@mui/material";
 import {
   Movie as MovieIcon,
@@ -21,7 +20,7 @@ import {
   Remove,
   ArrowBack,
 } from "@mui/icons-material";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
@@ -29,24 +28,94 @@ import useStyles from "./styles";
 import {
   useGetMovieQuery,
   useGetRecommendationsQuery,
+  useGetUsersListQuery,
 } from "../../services/TMDB";
 import genreIcons from "../../assets/genres";
-import { MovieList } from "../../components/index";
+import { MovieList } from "../../components";
 import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
+import { userSelector } from "../../features/auth";
+
+const tmdbApiKey = import.meta.env.VITE_TMDB_KEY;
 
 const MovieInfo = () => {
-  const { id } = useParams();
-  const { data, isFetching, error } = useGetMovieQuery(id);
+  const history = useNavigate();
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
+
+  const { id } = useParams();
+  const { data, isFetching, error } = useGetMovieQuery(id);
+
+  const user = useSelector(userSelector);
+  const [isMovieFav, setIsMovieFav] = useState(false);
+  const [isMovieWatchListed, setIsMovieWatchListed] = useState(false);
+
+  const addToFav = async () => {
+    const baseUrl = "https://api.themoviedb.org/3";
+    await axios.post(
+      `${baseUrl}/account/${
+        user.id
+      }/favorite?api_key=${tmdbApiKey}&session_id=${localStorage.getItem(
+        "session_id"
+      )}`,
+      {
+        media_type: "movie",
+        media_id: id,
+        favorite: !isMovieFav,
+      }
+    );
+  };
+  const addToWatchList = async () => {
+    const baseUrl = "https://api.themoviedb.org/3";
+    await axios.post(
+      `${baseUrl}/account/${
+        user.id
+      }/watchlist?api_key=${tmdbApiKey}&session_id=${localStorage.getItem(
+        "session_id"
+      )}`,
+      {
+        media_type: "movie",
+        media_id: id,
+        watchlist: !isMovieWatchListed,
+      }
+    );
+  };
+
+  const { data: favoriteMovies, refetch: refetchFavorited } =
+    useGetUsersListQuery({
+      accountId: user.id,
+      sessionId: localStorage.getItem("session_id"),
+      page: 1,
+      list: "favorite/movies",
+    });
+  const { data: watchlistMovies, refetch: refetchWatchlisted } =
+    useGetUsersListQuery({
+      accountId: user.id,
+      sessionId: localStorage.getItem("session_id"),
+      page: 1,
+      list: "watchlist/movies",
+    });
+
+  useEffect(() => {
+    refetchFavorited();
+    refetchWatchlisted();
+  }, []);
+
+  useEffect(() => {
+    setIsMovieFav(
+      !!favoriteMovies?.results?.find((movie) => movie?.id === data?.id)
+    );
+  }, [favoriteMovies, data]);
+
+  useEffect(() => {
+    setIsMovieWatchListed(
+      !!watchlistMovies?.results?.find((movie) => movie?.id === data?.id)
+    );
+  }, [watchlistMovies, data]);
 
   const { data: recommendations, isFetching: isRecommendationsFetching } =
-    useGetRecommendationsQuery({ list: "recommendations", movie_id: id });
-  const isMovieFav = true;
-  const isMovieWatchListed = false;
-  const addToFav = () => {};
-  const addToWatchList = () => {};
+    useGetRecommendationsQuery({ movieId: id, list: "/recommendations" });
+
+  const [open, setOpen] = useState(false);
 
   if (isFetching) {
     return (
@@ -68,7 +137,10 @@ const MovieInfo = () => {
     <Grid container className={classes.containerSpaceAround}>
       <Grid item sm={12} lg={4}>
         <img
-          src={`https://image.tmdb.org/t/p/w500/${data?.poster_path}`}
+          src={
+            data?.poster_path &&
+            `https://image.tmdb.org/t/p/w500/${data?.poster_path}`
+          }
           alt={data?.title}
         />
       </Grid>
@@ -95,13 +167,13 @@ const MovieInfo = () => {
               gutterBottom
               style={{ marginLeft: "10px" }}
             >
-              {data?.vote_average}/10
+              {data?.vote_average} / 10
             </Typography>
           </Box>
           <Typography variant="h6" align="center" gutterBottom>
-            {data?.runtime}min
+            {data?.runtime}min |
             {data?.spoken_languages.length > 0
-              ? `/${data?.spoken_languages[0].name}`
+              ? data?.spoken_languages[0].name
               : ""}
           </Typography>
         </Grid>
@@ -138,37 +210,32 @@ const MovieInfo = () => {
         </Typography>
 
         <Grid item container spacing={2}>
-          {data &&
-            data.credits?.cast
-              ?.map(
-                (character, i) =>
-                  character.profile_path && (
-                    <Grid
-                      key={i}
-                      item
-                      xs={4}
-                      md={2}
-                      component={Link}
-                      to={`/actors/${character.id}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Tooltip title={`${character.name}`}>
-                        <img
-                          className={classes.castImage}
-                          src={`https://image.tmdb.org/t/p/w500/${character.profile_path}`}
-                          alt={character.name}
-                        />
-                      </Tooltip>
-                      <Typography color="textPrimary">
-                        {character?.name}
-                      </Typography>
-                      <Typography color="textSecondary">
-                        {character.character.split("/")[0]}
-                      </Typography>
-                    </Grid>
-                  )
+          {data?.credits?.cast?.slice(0, 6).map(
+            (character, i) =>
+              character.profile_path && (
+                <Grid
+                  key={i}
+                  item
+                  xs={4}
+                  md={2}
+                  component={Link}
+                  to={`/actors/${character.id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Tooltip title={`${character.name}`}>
+                    <img
+                      className={classes.castImage}
+                      src={`https://image.tmdb.org/t/p/w500/${character.profile_path}`}
+                      alt={character.name}
+                    />
+                  </Tooltip>
+                  <Typography color="textPrimary">{character?.name}</Typography>
+                  <Typography color="textSecondary">
+                    {character.character.split("/")[0]}
+                  </Typography>
+                </Grid>
               )
-              .slice(0, 8)}
+          )}
         </Grid>
 
         <Grid item container style={{ marginTop: "2rem" }}>
@@ -236,35 +303,41 @@ const MovieInfo = () => {
         </Grid>
       </Grid>
 
+      {/* recommended movies */}
       <Box width="100%" marginTop="5rem">
         <Typography variant="h3" align="center" gutterBottom>
           You might also like
         </Typography>
-        {recommendations ? (
-          <MovieList movies={recommendations} numberOfMovie={12} />
-        ) : (
-          <Box>Sorry nothing was found.</Box>
-        )}
+        {isRecommendationsFetching &&
+          (recommendations && recommendations?.results?.length ? (
+            <MovieList movies={recommendations} numberOfMovies={12} />
+          ) : (
+            <Box>
+              <Typography variant="h6" align="center">
+                Sorry nothing was found.
+              </Typography>
+            </Box>
+          ))}
       </Box>
 
-      <Modal
-        closeAfterTransition
-        className={classes.modal}
-        open={open}
-        onClose={() => setOpen(false)}
-      >
-        {data?.videos?.results.length > 0 && (
+      {/* movie trailer */}
+      {data?.videos?.results.length > 0 && (
+        <Modal
+          closeAfterTransition
+          className={classes.modal}
+          open={open}
+          onClose={() => setOpen(false)}
+        >
           <iframe
             autoPlay
             className={classes.video}
             title="Trailer"
-            src={`https://www.youtube.com/embed/${
-              data.videos / results[0].key
-            }`}
+            src={`https://www.youtube.com/embed/${data?.videos?.results[0].key}?autoplay=1`}
             allow="autoplay"
+            allowFullScreen
           />
-        )}
-      </Modal>
+        </Modal>
+      )}
     </Grid>
   );
 };
