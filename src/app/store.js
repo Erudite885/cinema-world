@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { tmdbApi } from "../services/TMDB";
 import genreOrCategoryReducer from "../features/currentGenreOrCategory";
-import  authUserReducer from "../features/auth";
+import  userReducer from "../features/auth";
 
 export default configureStore({
   reducer: {
     [tmdbApi.reducerPath]: tmdbApi.reducer,
     currentGenreOrCategory: genreOrCategoryReducer,
-    currentUser: authUserReducer,
+    user: userReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(tmdbApi.middleware),
