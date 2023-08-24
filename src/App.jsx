@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 
-import { Navbar } from "./components";
+import { ActorCredits, Navbar } from "./components";
 import useAlan from "./components/alan/Alan";
 import { Actors, Movies, MovieInfo, Profile } from "./pages";
 import useStyles from "./styles";
@@ -33,17 +33,17 @@ const App = () => {
       element: <Layout />,
       children: [
         { path: "/", element: <Movies /> },
+        { path: "/approved", element: <Movies /> },
         { path: "/movie/:id", element: <MovieInfo /> },
         { path: "/profile/:id", element: <Profile /> },
         { path: "/actors/:id", element: <Actors /> },
-        { path: "/approved", element: <Movies /> },
-        { path: "/*", element: <Movies /> },
+        { path: "/actors/movie_credits/:id", element: <ActorCredits /> },
       ],
     },
   ]);
 
   return (
-    <div >
+    <div>
       <RouterProvider router={router} />
     </div>
   );
