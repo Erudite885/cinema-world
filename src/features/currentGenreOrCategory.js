@@ -8,12 +8,12 @@ export const genreOrCategory = createSlice({
     searchQuery: "",
   },
   reducers: {
-    selectGenreOrCategory: (oldState, action) => {
-      oldState.genreIdOrCategoryName = action.payload;
-      oldState.searchQuery = "";
+    selectGenreOrCategory: (state, action) => {
+      state.genreIdOrCategoryName = action.payload;
+      state.searchQuery = "";
     },
-    searchMovie: (oldState, action) => {
-      oldState.searchQuery = action.payload;
+    searchMovie: (state, action) => {
+      state.searchQuery = action.payload;
     },
   },
 });
