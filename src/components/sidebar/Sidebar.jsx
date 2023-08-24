@@ -10,10 +10,10 @@ import {
   CircularProgress,
   ListItemButton,
 } from "@mui/material";
+// import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useTheme } from "@mui/material/styles";
 import useStyles from "./styles";
 import { useGetGenresQuery } from "../../services/TMDB";
 import genreIcons from "../../assets/genres";
@@ -26,14 +26,14 @@ const categories = [
 ];
 
 const Sidebar = ({ setMobileOpen }) => {
-  const theme = useTheme();
+  const { genreIdOrCategoryName } = useSelector(
+    (state) => state.currentGenreOrCategory
+  );
+  // const theme = useTheme();
   const classes = useStyles();
   const { data, isFetching } = useGetGenresQuery();
 
   const dispatch = useDispatch();
-  const { genreIdOrCategoryName } = useSelector(
-    (state) => state.currentGenreOrCategory
-  );
 
   useEffect(() => {
     setMobileOpen(false);
