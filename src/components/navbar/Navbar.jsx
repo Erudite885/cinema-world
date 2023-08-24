@@ -29,25 +29,43 @@ const Navbar = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const theme = useTheme();
 
+  const { isAuth, user } = useSelector(userSelector);
+
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const token = localStorage.getItem("request_token");
+  const sessionIdFromLocal = localStorage.getItem("session_id");
   const dispatch = useDispatch();
 
   useEffect(() => {
     const logInUser = async () => {
       if (token) {
-        try {
-          const sessionId = localStorage.getItem("session_id")
-            ? localStorage.getItem("session_id")
-            : await createSessionId();
+        // try {
+        //   sessionId
+        //     ? localStorage.getItem("session_id")
+        //     : await createSessionId();
+
+        //   const { data: userData } = await moviesApi.get(
+        //     `/account?session_id=${sessionId}`
+        //   );
+        //   dispatch(setUser(userData));
+        // } catch (error) {
+        //   console.log("Your user data could not be fetched.");
+        // }
+
+        if (sessionIdFromLocal) {
+          const { data: userData } = await moviesApi.get(
+            `/account?session_id=${sessionIdFromLocal}`
+          );
+
+          dispatch(setUser(userData));
+        } else {
+          const sessionId = await createSessionId();
 
           const { data: userData } = await moviesApi.get(
             `/account?session_id=${sessionId}`
           );
           dispatch(setUser(userData));
-        } catch (error) {
-          console.log("Your user data could not be fetched.");
         }
       }
     };
@@ -55,12 +73,11 @@ const Navbar = () => {
     logInUser();
   }, [token]);
 
-  const { isAuth, user } = useSelector(userSelector);
-  const colorMode = useContext(ColorModeContext)
+  const colorMode = useContext(ColorModeContext);
 
   return (
     <>
-      <AppBar className={classes.appBarStyle}  position="fixed">
+      <AppBar className={classes.appBarStyle} position="fixed">
         <Toolbar className={classes.toolbar}>
           {isMobile && (
             <IconButton
@@ -98,7 +115,7 @@ const Navbar = () => {
                   style={{ width: 30, height: 30 }}
                   alt="Profile"
                   src={
-                    user?.avatar?.tmdb?.avatar_path &&
+                    // user?.avatar?.tmdb?.avatar_path &&
                     `https://www.themoviedb.org/t/p/w64_and_h64_face${user?.avatar?.tmdb?.avatar_path}`
                   }
                 />
