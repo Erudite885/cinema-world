@@ -21,13 +21,13 @@ export default makeStyles((theme) => ({
     right: 0,
     width: "100%",
     height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.575)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     backgroundBlendMode: "darken",
   },
   cardContent: {
     color: "#fff",
     width: "40%",
-    [theme.breakpoints.down("lg")]: {
+    [theme.breakpoints.down("sm")]: {
       width: "100%",
     },
   },
