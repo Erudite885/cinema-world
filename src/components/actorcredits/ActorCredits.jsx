@@ -8,8 +8,6 @@ import {
   ListItem,
   List,
   ListItemText,
-  ListItemAvatar,
-  Avatar,
   Divider,
 } from "@mui/material";
 import { useNavigate, useParams, Link } from "react-router-dom";
@@ -43,7 +41,7 @@ const ActorCredits = () => {
       <Box display="flex" justifyContent="center" alignItems="center">
         <Button
           startIcon={<ArrowBack />}
-          color="primary"
+          color="orange !important"
           onClick={() => navigate(-1)}
         >
           Go Back
@@ -51,15 +49,20 @@ const ActorCredits = () => {
       </Box>
     );
   }
-  console.log(data)
+  console.log(data);
   const movie = [...data.cast];
   movie.sort((a, b) => {
     return b.popularity - a.popularity;
   });
-  console.log(movie)
+  console.log(movie);
   return (
     <>
-      <Grid>
+      <Grid
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        flexDirection="column"
+      >
         <img
           className={classes.image}
           src={`https://image.tmdb.org/t/p/w780/${base?.profile_path}`}
@@ -82,7 +85,7 @@ const ActorCredits = () => {
           ?.map((i) => (
             <div key={i.credit_id}>
               <List className={classes.insideList}>
-                <ListItem >
+                <ListItem>
                   <Link to={`/movie/${i?.id}`}>
                     <img
                       src={`https://image.tmdb.org/t/p/w780/${
@@ -106,7 +109,7 @@ const ActorCredits = () => {
               <Divider style={{ borderWidth: "1.5px" }} />
             </div>
           ))
-          .slice(0, 15)}
+          .slice(0, 35)}
       </div>
     </>
   );
