@@ -6,7 +6,7 @@ import { Movie } from "..";
 const RatedCards = ({ title, data }) => {
   return (
     <Box>
-      <Typography>{title}</Typography>
+      <Typography variant='h5' gutterBottom>{title}</Typography>
       <Box>
         {data?.results?.map((movie, i) => (
           <Movie key={movie.id} movie={movie} i={i} />

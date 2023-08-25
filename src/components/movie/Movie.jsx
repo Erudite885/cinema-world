@@ -6,6 +6,7 @@ import useStyles from "./styles";
 
 const Movie = ({ movie, i }) => {
   const classes = useStyles();
+  
   return (
     <Grid className={classes.movie} item xs={12} sm={6} md={4} lg={3} xl={2}>
       <Grow in key={i} timeout={(i + 1) * 250}>

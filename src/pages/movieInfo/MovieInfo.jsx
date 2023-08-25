@@ -41,20 +41,18 @@ const MovieInfo = () => {
   const history = useNavigate();
   const classes = useStyles();
   const dispatch = useDispatch();
-
   const { id } = useParams();
-  const { data, isFetching, error } = useGetMovieQuery(id);
 
   const user = useSelector(userSelector);
   const [isMovieFav, setIsMovieFav] = useState(false);
   const [isMovieWatchListed, setIsMovieWatchListed] = useState(false);
 
+  const { data, isFetching, error } = useGetMovieQuery(id);
+
   const addToFav = async () => {
     const baseUrl = "https://api.themoviedb.org/3";
     await axios.post(
-      `${baseUrl}/account/${
-        user.id
-      }/favorite?api_key=${tmdbApiKey}&session_id=${localStorage.getItem(
+      `${baseUrl}/account/${user.id}/favorite?api_key=${tmdbApiKey}&session_id=${localStorage.getItem(
         "session_id"
       )}`,
       {
@@ -137,10 +135,7 @@ const MovieInfo = () => {
     <Grid container className={classes.containerSpaceAround}>
       <Grid item sm={12} lg={4}>
         <img
-          src={
-            data?.poster_path &&
-            `https://image.tmdb.org/t/p/w500/${data?.poster_path}`
-          }
+          src={data?.poster_path && `https://image.tmdb.org/t/p/w500/${data?.poster_path}`}
           alt={data?.title}
         />
       </Grid>
@@ -308,16 +303,16 @@ const MovieInfo = () => {
         <Typography variant="h3" align="center" gutterBottom>
           You might also like
         </Typography>
-        {isRecommendationsFetching &&
-          (recommendations && recommendations?.results?.length ? (
-            <MovieList movies={recommendations} numberOfMovies={12} />
-          ) : (
-            <Box>
-              <Typography variant="h6" align="center">
-                Sorry nothing was found.
-              </Typography>
-            </Box>
-          ))}
+        {recommendations ? (
+          <MovieList movies={recommendations} 
+          numberOfMovies={12} />
+        ) : (
+          <Box>
+            <Typography variant="h6" align="center">
+              Sorry nothing was found.
+            </Typography>
+          </Box>
+        )}
       </Box>
 
       {/* movie trailer */}

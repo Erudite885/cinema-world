@@ -51,12 +51,12 @@ const ActorCredits = () => {
       </Box>
     );
   }
-
+  console.log(data)
   const movie = [...data.cast];
   movie.sort((a, b) => {
     return b.popularity - a.popularity;
   });
-
+  console.log(movie)
   return (
     <>
       <Grid>
@@ -82,7 +82,7 @@ const ActorCredits = () => {
           ?.map((i) => (
             <div key={i.credit_id}>
               <List className={classes.insideList}>
-                <ListItem>
+                <ListItem >
                   <Link to={`/movie/${i?.id}`}>
                     <img
                       src={`https://image.tmdb.org/t/p/w780/${

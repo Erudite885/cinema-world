@@ -3,8 +3,8 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 
 import { ActorCredits, Navbar } from "./components";
-import useAlan from "./components/alan/Alan";
 import { Actors, Movies, MovieInfo, Profile } from "./pages";
+import useAlan from "./components/alan/Alan";
 import useStyles from "./styles";
 
 const App = () => {
