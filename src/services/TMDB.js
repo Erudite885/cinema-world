@@ -23,7 +23,7 @@ export const tmdbApi = createApi({
           genreIdOrCategoryName &&
           typeof genreIdOrCategoryName === "string"
         ) {
-          `movie/${genreIdOrCategoryName}?page=${page}&api_key=${tmdbApiKey}`;
+          return `movie/${genreIdOrCategoryName}?page=${page}&api_key=${tmdbApiKey}`;
         }
 
         // genre
@@ -38,7 +38,7 @@ export const tmdbApi = createApi({
         return `movie/popular?page=${page}&api_key=${tmdbApiKey}`;
       },
     }),
-    
+
     // movie
     getMovie: builder.query({
       query: (id) =>
@@ -46,8 +46,8 @@ export const tmdbApi = createApi({
     }),
     // recommended
     getRecommendations: builder.query({
-      query: ({ movieId, list }) =>
-        `/movie/${movieId}/${list}?api_key=${tmdbApiKey}`,
+      query: ({ movie_id, list }) =>
+        `/movie/${movie_id}/${list}?api_key=${tmdbApiKey}`,
     }),
     // actor details
     getActorsDetails: builder.query({
@@ -64,8 +64,8 @@ export const tmdbApi = createApi({
     }),
     // user list
     getUsersList: builder.query({
-      query: ({ accountId, sessionId, page, list }) =>
-        `account/${accountId}/${list}?api_key=${tmdbApiKey}&session_id=${sessionId}&page=${page}`,
+      query: ({ accountId, sessionId, page, listName }) =>
+        `account/${accountId}/${listName}?api_key=${tmdbApiKey}&session_id=${sessionId}&page=${page}`,
     }),
   }),
 });
