@@ -20,7 +20,7 @@ const Search = () => {
   };
 
 
-  if (location.pathname !== "/" && location.pathname !== "/approved") {
+  if (location.pathname !== "/" ) {
     return null;
   }
 
