@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   Modal,
   Typography,
@@ -20,83 +23,45 @@ import {
   Remove,
   ArrowBack,
 } from "@mui/icons-material";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+
 import axios from "axios";
 
 import useStyles from "./styles";
+import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
+import { userSelector } from "../../features/auth";
+import { MovieList } from "../../components";
+import genreIcons from "../../assets/genres";
 import {
   useGetMovieQuery,
   useGetRecommendationsQuery,
   useGetUsersListQuery,
 } from "../../services/TMDB";
-import genreIcons from "../../assets/genres";
-import { MovieList } from "../../components";
-import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
-import { userSelector } from "../../features/auth";
-
-const tmdbApiKey = import.meta.env.VITE_TMDB_KEY;
 
 const MovieInfo = () => {
-  const history = useNavigate();
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const { user } = useSelector(userSelector);
   const { id } = useParams();
-
-  const user = useSelector(userSelector);
-  const [isMovieFav, setIsMovieFav] = useState(false);
-  const [isMovieWatchListed, setIsMovieWatchListed] = useState(false);
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
 
   const { data, isFetching, error } = useGetMovieQuery(id);
+  const { data: favoriteMovies } = useGetUsersListQuery({
+    listName: "favorite/movies",
+    accountId: user.id,
+    sessionId: localStorage.getItem("session_id"),
+    page: 1,
+  });
+  const { data: watchlistMovies } = useGetUsersListQuery({
+    listName: "watchlist/movies",
+    accountId: user.id,
+    sessionId: localStorage.getItem("session_id"),
+    page: 1,
+  });
+  const { data: recommendations, isFetching: isRecommendationsFetching } =
+    useGetRecommendationsQuery({ list: "/recommendations", movie_id: id });
 
-  const addToFav = async () => {
-    const baseUrl = "https://api.themoviedb.org/3";
-    await axios.post(
-      `${baseUrl}/account/${user.id}/favorite?api_key=${tmdbApiKey}&session_id=${localStorage.getItem(
-        "session_id"
-      )}`,
-      {
-        media_type: "movie",
-        media_id: id,
-        favorite: !isMovieFav,
-      }
-    );
-  };
-  const addToWatchList = async () => {
-    const baseUrl = "https://api.themoviedb.org/3";
-    await axios.post(
-      `${baseUrl}/account/${
-        user.id
-      }/watchlist?api_key=${tmdbApiKey}&session_id=${localStorage.getItem(
-        "session_id"
-      )}`,
-      {
-        media_type: "movie",
-        media_id: id,
-        watchlist: !isMovieWatchListed,
-      }
-    );
-  };
-
-  const { data: favoriteMovies, refetch: refetchFavorited } =
-    useGetUsersListQuery({
-      accountId: user.id,
-      sessionId: localStorage.getItem("session_id"),
-      page: 1,
-      list: "favorite/movies",
-    });
-  const { data: watchlistMovies, refetch: refetchWatchlisted } =
-    useGetUsersListQuery({
-      accountId: user.id,
-      sessionId: localStorage.getItem("session_id"),
-      page: 1,
-      list: "watchlist/movies",
-    });
-
-  useEffect(() => {
-    refetchFavorited();
-    refetchWatchlisted();
-  }, []);
+  const [isMovieFav, setIsMovieFav] = useState(false);
+  const [isMovieWatchListed, setIsMovieWatchListed] = useState(false);
 
   useEffect(() => {
     setIsMovieFav(
@@ -110,10 +75,43 @@ const MovieInfo = () => {
     );
   }, [watchlistMovies, data]);
 
-  const { data: recommendations, isFetching: isRecommendationsFetching } =
-    useGetRecommendationsQuery({ movieId: id, list: "/recommendations" });
+  const addToFav = async () => {
+    const baseUrl = "https://api.themoviedb.org/3";
+    const tmdbApiKey = import.meta.env.VITE_TMDB_KEY;
 
-  const [open, setOpen] = useState(false);
+    await axios.post(
+      `${baseUrl}/account/${
+        user.id
+      }/favorite?api_key=${tmdbApiKey}&session_id=${localStorage.getItem(
+        "session_id"
+      )}`,
+      {
+        media_type: "movie",
+        media_id: id,
+        favorite: !isMovieFav,
+      }
+    );
+    setIsMovieFav((prev) => !prev);
+  };
+
+  const addToWatchList = async () => {
+    const baseUrl = "https://api.themoviedb.org/3";
+    const tmdbApiKey = import.meta.env.VITE_TMDB_KEY;
+
+    await axios.post(
+      `${baseUrl}/account/${
+        user.id
+      }/watchlist?api_key=${tmdbApiKey}&session_id=${localStorage.getItem(
+        "session_id"
+      )}`,
+      {
+        media_type: "movie",
+        media_id: id,
+        watchlist: !isMovieWatchListed,
+      }
+    );
+    setIsMovieWatchListed((prev) => !prev);
+  };
 
   if (isFetching) {
     return (
@@ -133,9 +131,15 @@ const MovieInfo = () => {
 
   return (
     <Grid container className={classes.containerSpaceAround}>
-      <Grid item sm={12} lg={4}>
+      <Grid
+        item
+        sm={12}
+        lg={4}
+        style={{ display: "flex", marginBottom: "30px" }}
+      >
         <img
-          src={data?.poster_path && `https://image.tmdb.org/t/p/w500/${data?.poster_path}`}
+          className={classes.poster}
+          src={`https://image.tmdb.org/t/p/w500/${data?.poster_path}`}
           alt={data?.title}
         />
       </Grid>
@@ -166,10 +170,7 @@ const MovieInfo = () => {
             </Typography>
           </Box>
           <Typography variant="h6" align="center" gutterBottom>
-            {data?.runtime}min |
-            {data?.spoken_languages.length > 0
-              ? data?.spoken_languages[0].name
-              : ""}
+            {data?.runtime}min | Language: {data?.spoken_languages[0].name}
           </Typography>
         </Grid>
 
@@ -185,7 +186,6 @@ const MovieInfo = () => {
                 src={genreIcons[genre.name.toLowerCase()]}
                 className={classes.genreImage}
                 height={30}
-                alt=""
               />
               <Typography variant="subtitle1" color="textPrimary">
                 {genre?.name}
@@ -205,7 +205,7 @@ const MovieInfo = () => {
         </Typography>
 
         <Grid item container spacing={2}>
-          {data?.credits?.cast?.slice(0, 6).map(
+          {data?.credits?.cast?.slice(0, 8).map(
             (character, i) =>
               character.profile_path && (
                 <Grid
@@ -304,8 +304,7 @@ const MovieInfo = () => {
           You might also like
         </Typography>
         {recommendations ? (
-          <MovieList movies={recommendations} 
-          numberOfMovies={12} />
+          <MovieList movies={recommendations} numberOfMovies={12} />
         ) : (
           <Box>
             <Typography variant="h6" align="center">
