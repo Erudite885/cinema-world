@@ -6,7 +6,7 @@ const initialState = {
   sessionId: "",
 };
 
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
@@ -15,7 +15,7 @@ export const authSlice = createSlice({
       state.isAuthenticated = true;
       state.sessionId = localStorage.getItem("session_id");
 
-      localStorage.setItem("account_id", action.payload.id);
+      localStorage.setItem("accountId", action.payload.id);
     },
   },
 });
