@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import {
   Divider,
   List,
-  ListItem,
   ListItemText,
   ListSubheader,
   ListItemIcon,
@@ -10,7 +9,7 @@ import {
   CircularProgress,
   ListItemButton,
 } from "@mui/material";
-// import { useTheme } from "@mui/material/styles";
+
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -29,7 +28,7 @@ const Sidebar = ({ setMobileOpen }) => {
   const { genreIdOrCategoryName } = useSelector(
     (state) => state.currentGenreOrCategory
   );
-  // const theme = useTheme();
+
   const classes = useStyles();
   const { data, isFetching } = useGetGenresQuery();
 
@@ -42,30 +41,26 @@ const Sidebar = ({ setMobileOpen }) => {
   return (
     <>
       <Link to={`/`} className={classes.imageLink}>
-        {/* <img
-          src={theme.palette.mode === "light" ? "" : ""}
-          alt="logo"
-          className={classes.image}
-        /> */}
         <h2 className={classes.logo}>CINEMA WORLD</h2>{" "}
-        {/*temporary, image will come later*/}
       </Link>
       <Divider />
       <List>
-        <ListSubheader>Categories </ListSubheader>
+        <ListSubheader>Categories</ListSubheader>
         {categories.map(({ label, value }) => (
           <Link key={value} className={classes.links} to="/">
             <ListItemButton
               onClick={() => dispatch(selectGenreOrCategory(value))}
             >
-              <ListItemIcon>
-                <img
-                  src={genreIcons[label.toLowerCase()]}
-                  alt={label}
-                  className={classes.genreImages}
-                  height={30}
-                />
-              </ListItemIcon>
+              {
+                <ListItemIcon>
+                  <img
+                    src={genreIcons[label.toLowerCase()]}
+                    alt={label}
+                    className={classes.genreImages}
+                    height={30}
+                  />
+                </ListItemIcon>
+              }
               <ListItemText primary={label} />
             </ListItemButton>
           </Link>
@@ -84,14 +79,16 @@ const Sidebar = ({ setMobileOpen }) => {
               <ListItemButton
                 onClick={() => dispatch(selectGenreOrCategory(id))}
               >
-                <ListItemIcon>
-                  <img
-                    src={genreIcons[name.toLowerCase()]}
-                    alt={name}
-                    className={classes.genreImages}
-                    height={30}
-                  />
-                </ListItemIcon>
+                {
+                  <ListItemIcon>
+                    <img
+                      src={genreIcons[name.toLowerCase()]}
+                      alt={name}
+                      className={classes.genreImages}
+                      height={30}
+                    />
+                  </ListItemIcon>
+                }
                 <ListItemText primary={name} />
               </ListItemButton>
             </Link>
