@@ -6,6 +6,7 @@ import useStyles from "./styles";
 
 const FeaturedMovie = ({ movie }) => {
   const classes = useStyles();
+  
   if (!movie) return null;
 
   return (
@@ -21,11 +22,7 @@ const FeaturedMovie = ({ movie }) => {
         <CardMedia
           media="picture"
           alt={movie?.title}
-          image={
-            movie?.backdrop_path
-              ? `https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`
-              : "https://www.fillmurray.com/200/300"
-          }
+          image={`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}
           title={movie?.title}
           className={classes.cardMedia}
         />
