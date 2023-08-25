@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "react-redux/es/hooks/useSelector";
 import {
   Box,
   CircularProgress,
@@ -7,7 +7,6 @@ import {
   Typography,
 } from "@mui/material";
 
-// import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
 import { useGetMoviesQuery } from "../../services/TMDB";
 import { MovieList, Pagination, FeaturedMovie } from "../../components";
 
@@ -33,10 +32,10 @@ const Movies = () => {
     );
   }
 
-  if (!data?.results.length) {
+  if (!data.results.length) {
     return (
       <Box display="flex" alignItems="center" mt="20px">
-        <Typography variant="h4">No Match. Please try again</Typography>
+        <Typography variant="h4">No Match. Please try searching for something else.</Typography>
       </Box>
     );
   }
