@@ -10,30 +10,30 @@ import { RatedCards } from "../../components";
 const Profile = () => {
   const { user } = useSelector(userSelector);
 
+    const { data: favoriteMovies, refetch: refetchFavorites } =
+      useGetUsersListQuery({
+        listName: "favorite/movies",
+        accountId: user.id,
+        sessionId: localStorage.getItem("session_id"),
+        page: 1,
+      });
+    const { data: watchlistMovies, refetch: refetchWatchlisted } =
+      useGetUsersListQuery({
+        listName: "watchlist/movies",
+        accountId: user.id,
+        sessionId: localStorage.getItem("session_id"),
+        page: 1,
+      });
+
+    useEffect(() => {
+      refetchFavorites();
+      refetchWatchlisted();
+    }, []);
+
   const logout = () => {
     localStorage.clear();
     window.location.href = "/";
   };
-
-  const { data: favoriteMovies, refetch: refetchFavorited } =
-    useGetUsersListQuery({
-      accountId: user.id,
-      sessionId: localStorage.getItem("session_id"),
-      page: 1,
-      list: "favorite/movies",
-    });
-  const { data: watchlistMovies, refetch: refetchWatchlisted } =
-    useGetUsersListQuery({
-      accountId: user.id,
-      sessionId: localStorage.getItem("session_id"),
-      page: 1,
-      list: "watchlist/movies",
-    });
-
-  useEffect(() => {
-    refetchFavorited();
-    refetchWatchlisted();
-  }, []);
 
   return (
     <Box>
