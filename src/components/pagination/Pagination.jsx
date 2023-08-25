@@ -7,10 +7,14 @@ const Pagination = ({ currentPage, setPage, totalPages }) => {
   const classes = useStyles();
 
   const handlePrev = () => {
-    setPage((prevPage) => prevPage - 1);
+    if (currentPage !== 1) {
+      setPage((prevPage) => prevPage - 1);
+    }
   };
   const handleNext = () => {
-    setPage((prevPage) => prevPage + 1);
+    if (currentPage !== totalPages) {
+      setPage((prevPage) => prevPage + 1);
+    }
   };
 
   if (totalPages === 0) return null;
@@ -22,7 +26,7 @@ const Pagination = ({ currentPage, setPage, totalPages }) => {
         onClick={handlePrev}
         className={classes.button}
         variant="contained"
-        color="primary"
+        color="orange"
         type="button"
       >
         Prev
@@ -35,7 +39,7 @@ const Pagination = ({ currentPage, setPage, totalPages }) => {
         onClick={handleNext}
         className={classes.button}
         variant="contained"
-        color="primary"
+        color="orange"
         type="button"
       >
         Next
