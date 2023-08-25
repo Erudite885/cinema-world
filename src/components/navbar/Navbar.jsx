@@ -1,10 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
-import {
-  AccountCircle,
-  Brightness4,
-  Brightness7,
-  Menu,
-} from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 import {
   AppBar,
   Avatar,
@@ -14,54 +11,44 @@ import {
   Toolbar,
   useMediaQuery,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  AccountCircle,
+  Brightness4,
+  Brightness7,
+  Menu,
+} from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
-import { Link } from "react-router-dom";
 
 import { ColorModeContext } from "../../utils/ToggleColorMode";
 import { setUser, userSelector } from "../../features/auth";
 import { fetchToken, createSessionId, moviesApi } from "../../utils";
-import useStyles from "./styles";
 import { Search, Sidebar } from "..";
+import useStyles from "./styles";
 
 const Navbar = () => {
   const classes = useStyles();
   const isMobile = useMediaQuery("(max-width:600px)");
   const theme = useTheme();
 
-  const { isAuth, user } = useSelector(userSelector);
-
+  const { isAuthenticated, user } = useSelector(userSelector);
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const colorMode = useContext(ColorModeContext);
+
   const token = localStorage.getItem("request_token");
-  const sessionIdFromLocal = localStorage.getItem("session_id");
+  const sessionIdFromLocalStorage = localStorage.getItem("session_id");
   const dispatch = useDispatch();
 
   useEffect(() => {
     const logInUser = async () => {
       if (token) {
-        // try {
-        //   sessionId
-        //     ? localStorage.getItem("session_id")
-        //     : await createSessionId();
-
-        //   const { data: userData } = await moviesApi.get(
-        //     `/account?session_id=${sessionId}`
-        //   );
-        //   dispatch(setUser(userData));
-        // } catch (error) {
-        //   console.log("Your user data could not be fetched.");
-        // }
-
-        if (sessionIdFromLocal) {
+        if (sessionIdFromLocalStorage) {
           const { data: userData } = await moviesApi.get(
-            `/account?session_id=${sessionIdFromLocal}`
+            `/account?session_id=${sessionIdFromLocalStorage}`
           );
-
           dispatch(setUser(userData));
         } else {
           const sessionId = await createSessionId();
-
           const { data: userData } = await moviesApi.get(
             `/account?session_id=${sessionId}`
           );
@@ -72,8 +59,6 @@ const Navbar = () => {
 
     logInUser();
   }, [token]);
-
-  const colorMode = useContext(ColorModeContext);
 
   return (
     <>
@@ -99,7 +84,7 @@ const Navbar = () => {
           </IconButton>
           {!isMobile && <Search />}
           <div>
-            {!isAuth ? (
+            {!isAuthenticated ? (
               <Button color="inherit" onClick={fetchToken}>
                 Login &nbsp; <AccountCircle />
               </Button>
@@ -114,9 +99,7 @@ const Navbar = () => {
                 <Avatar
                   style={{ width: 30, height: 30 }}
                   alt="Profile"
-                  src={
-                    "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-                  }
+                  src={`https://www.themoviedb.org/t/p/w64_and_h64_face${user?.avatar?.tmdb?.avatar_path}`}
                 />
               </Button>
             )}
@@ -124,6 +107,7 @@ const Navbar = () => {
           {isMobile && <Search />}
         </Toolbar>
       </AppBar>
+      
       <div>
         <nav className={classes.drawer}>
           {isMobile ? (
