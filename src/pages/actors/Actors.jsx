@@ -18,8 +18,7 @@ const Actors = () => {
   const [page, setPage] = useState(1);
 
   const { data, isFetching, error } = useGetActorsDetailsQuery(id);
-  const { data: movies, isFetching: isMoviesFetching } =
-    useGetMoviesByActorIdQuery({ id, page });
+  const { data: movies } = useGetMoviesByActorIdQuery({ id, page });
 
   if (isFetching) {
     return (
@@ -34,7 +33,7 @@ const Actors = () => {
       <Box display="flex" justifyContent="center" alignItems="center">
         <Button
           startIcon={<ArrowBack />}
-          color="primary"
+          color="orange !important"
           onClick={() => navigate(-1)}
         >
           Go Back
@@ -85,7 +84,7 @@ const Actors = () => {
               All Credits
             </Link>
             <Button
-              color="primary"
+              color="orange !important"
               startIcon={<ArrowBack />}
               onClick={() => navigate(-1)}
             >
@@ -99,12 +98,14 @@ const Actors = () => {
         <Typography variant="h2" align="center" gutterBottom>
           Movies
         </Typography>
-        {isMoviesFetching && (
-          <Box display="flex" justifyContent="center">
-            <CircularProgress size={4} />
+        {!movies && (
+          <Box>
+            <Typography variant="h6" align="center">
+              Sorry, nothing was found.
+            </Typography>
           </Box>
         )}
-        {!isMoviesFetching && movies && movies?.results?.length ? (
+        {movies && (
           <>
             <MovieList movies={movies} numberOfMovies={12} />
             <Pagination
@@ -113,12 +114,6 @@ const Actors = () => {
               totalPages={movies?.total_pages}
             />
           </>
-        ) : (
-          <Box>
-            <Typography variant="h6" align="center">
-              Sorry, nothing was found.
-            </Typography>
-          </Box>
         )}
       </Box>
     </>
