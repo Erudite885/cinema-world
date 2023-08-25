@@ -6,7 +6,7 @@ import useStyles from "./styles";
 
 const Movie = ({ movie, i }) => {
   const classes = useStyles();
-  
+
   return (
     <Grid className={classes.movie} item xs={12} sm={6} md={4} lg={3} xl={2}>
       <Grow in key={i} timeout={(i + 1) * 250}>
@@ -15,7 +15,7 @@ const Movie = ({ movie, i }) => {
             src={
               movie.poster_path
                 ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                : "https://www.fillmurray.com/200/300"
+                : `https://statisc2.bigstockphoto.com/3/5/3/large2/353144237.jpg`
             }
             alt={movie.title}
             className={classes.image}
