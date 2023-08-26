@@ -41,7 +41,7 @@ const ActorCredits = () => {
       <Box display="flex" justifyContent="center" alignItems="center">
         <Button
           startIcon={<ArrowBack />}
-          color="orange !important"
+          color="warning"
           onClick={() => navigate(-1)}
         >
           Go Back

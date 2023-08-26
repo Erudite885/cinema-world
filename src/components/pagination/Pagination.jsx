@@ -26,7 +26,7 @@ const Pagination = ({ currentPage, setPage, totalPages }) => {
         onClick={handlePrev}
         className={classes.button}
         variant="contained"
-        color="orange"
+        color="warning"
         type="button"
       >
         Prev
@@ -39,7 +39,7 @@ const Pagination = ({ currentPage, setPage, totalPages }) => {
         onClick={handleNext}
         className={classes.button}
         variant="contained"
-        color="orange"
+        color="warning"
         type="button"
       >
         Next
