@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useStyles from "./styles";
 import { useGetGenresQuery } from "../../services/TMDB";
 import genreIcons from "../../assets/genres";
+import ultimateLogo from "../../assets/images/ultimateLogo.png";
 import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
 
 const categories = [
@@ -41,6 +42,7 @@ const Sidebar = ({ setMobileOpen }) => {
   return (
     <>
       <Link to={`/`} className={classes.imageLink}>
+        <img src={ultimateLogo} width={80} height={70} alt="cinema world logo" /> <br />
         <h2 className={classes.logo}>CINEMA WORLD</h2>{" "}
       </Link>
       <Divider />
