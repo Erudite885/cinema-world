@@ -35,3 +35,13 @@
 ### **Light Mode Page View**
 
 ![lightfull](./src/assets/images/CinemaWorld-lightfull.png)
+
+
+## Acknowledgments
+
+Used resources:
+
+* [The Movie DB API Documentation](https://developers.themoviedb.org/3/getting-started/introduction)
+* [Alan AI Documentation](https://alan.app/docs/)
+* [MUI Library](https://mui.com/)
+* [Bossblingzs Logos](https://www.instagram.com/bossblingzs?igshid=ZDc4ODBmNjlmNQ==/)
