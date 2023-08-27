@@ -19,23 +19,22 @@
     ·
     <a href="https://github.com/Erudite885/cinema-world/issues">Request Feature</a>
   </p>
+
+  <div align="center">
+  <p align="center">Dark Mode Page View</p>
+  <img src='./src/assets/images/CinemaWorld-darkfull.png' alt='test'  />
+  </div>
+
+  <div align="center">
+  <p align="center">Mobile Page View</p>
+  <img src='./src/assets/images/CinemaWorld-mobile.png' alt='test'  />
+  </div>
+
+  <div align="center">
+  <p align="center">Light Mode Page View</p>
+  <img src='./src/assets/images/CinemaWorld-lightfull.png' alt='test'  />
+  </div>
 </div>
-
-
-
-
-
-### **Dark Mode Page View**
-
-![darkfull](./src/assets/images/CinemaWorld-darkfull.png)
-
-###  **Mobile View**
-![mobile](./src/assets/images/CinemaWorld-mobile.png)
-
-### **Light Mode Page View**
-
-![lightfull](./src/assets/images/CinemaWorld-lightfull.png)
-
 
 ## Acknowledgments
 
