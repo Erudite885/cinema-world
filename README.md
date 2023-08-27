@@ -10,7 +10,7 @@
   <p align="center">
     This is Cinema World, an app where you can find all of the movies in the world. This application includes user authentication feature, dark mode, movie sorting based on categories or genres, movie addition to favorites or watchlist, an in-app voice assistant A.I. called Alan for easy accessibility of all the app features, and more... 
     <br />
-    <a href="https://cinemaworldmovies.netlify.app/"><strong>View Webite »</strong></a>
+    <a href="https://cinemaworldmovies.netlify.app/"><strong>Visit Webite »</strong></a>
     <br />
     <br />
     <a href="https://github.com/Erudite885/cinema-world">Explore the project</a>
