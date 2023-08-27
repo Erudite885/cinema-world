@@ -1,8 +1,8 @@
 ## [CINEMAWORLD](https://cinemaworldmovies.netlify.app/)
 
 <div align="center">
-  <a href="https://github.com/Erudite885/cinema-world">
-    <img src='./src/assets/images/ultimateLogo.png' alt='test' width="200" height="100" />
+  <a href="https://cinemaworldmovies.netlify.app/">
+    <img src='./src/assets/images/ultimateLogo.png' alt='cinemaworld logo' width="200" height="100" />
   </a>
 
    <h2 align="center">Cinema World</h2>
@@ -22,17 +22,17 @@
 <br />
   <div align="center">
   <h2 >Dark Mode Page View</h2>
-  <img src='./src/assets/images/CinemaWorld-darkfull.png' alt='test'  />
+  <img src='./src/assets/images/CinemaWorld-darkfull.png' alt='Dark Mode Page View'  />
   </div>
 <br />
   <div align="center">
   <h2 >Mobile Page View</h2>
-  <img src='./src/assets/images/CinemaWorld-mobile.png' alt='test'  />
+  <img src='./src/assets/images/CinemaWorld-mobile.png' alt='Mobile Page View'  />
   </div>
 <br />
   <div align="center">
   <h2 >Light Mode Page View</h2>
-  <img src='./src/assets/images/CinemaWorld-lightfull.png' alt='test'  />
+  <img src='./src/assets/images/CinemaWorld-lightfull.png' alt='Light Mode Page View'  />
   </div>
 </div>
 
